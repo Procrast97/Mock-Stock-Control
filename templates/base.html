@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="margin:0;padding:0;background-color:#f4f4f4;">
+<div style="max-width:600px;margin:0 auto;padding:20px;">
+
+    <!-- Header -->
+  <div style="background-color:#1a1a2e;padding:20px;border-radius:8px 8px 0 0;">
+    <h1 style="font-family:Arial,sans-serif;font-size:16px;color:#c8f135;margin:0;">
+      Ocledo — Stock Alert
+    </h1>
+    <p style="font-family:Arial,sans-serif;font-size:12px;color:#aaaaaa;margin:4px 0 0;">
+      Generated: {{ generated_at }}
+    </p>
+  </div>
+   <!-- Alert Tier Title -->
+  <div style="background-color:{{ color }};padding:12px 20px;">
+    <h2 style="font-family:Arial,sans-serif;font-size:15px;color:#ffffff;margin:0;">
+      {{ tier_name }} — {{ items|length }} item(s) require attention
+    </h2>
+  </div>
+
+  <!-- Table -->
+  <table style="width:100%;border-collapse:collapse;font-family:Arial,sans-serif;font-size:13px;background-color:#ffffff;">
+
+    {% if tier_name == "Out of Stock" %}
+    <tr style="background-color:#f2f2f2;text-align:left;">
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">Product</th>
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">SKU</th>
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">Supplier</th>
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">Lead Time (days)</th>
+    </tr>
+    {% for item in items %}
+    <tr style="border-bottom:1px solid #eeeeee;">
+      <td style="padding:10px;">{{ item.product_name }}</td>
+      <td style="padding:10px;">{{ item.sku }}</td>
+      <td style="padding:10px;">{{ item.supplier }}</td>
+      <td style="padding:10px;">{{ item.lead_time_days }}</td>
+    </tr>
+    {% endfor %}
+
+    {% elif tier_name == "Critical Stock" %}
+    <tr style="background-color:#f2f2f2;text-align:left;">
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">Product</th>
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">SKU</th>
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">Supplier</th>
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">Days Remaining</th>
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">Lead Time (days)</th>
+    </tr>
+    {% for item in items %}
+    <tr style="border-bottom:1px solid #eeeeee;">
+      <td style="padding:10px;">{{ item.product_name }}</td>
+      <td style="padding:10px;">{{ item.sku }}</td>
+      <td style="padding:10px;">{{ item.supplier }}</td>
+      <td style="padding:10px;">{{ item.days_of_stock_remaining }}</td>
+      <td style="padding:10px;">{{ item.lead_time_days }}</td>
+    </tr>
+    {% endfor %}
+
+    {% elif tier_name == "Low Stock" %}
+    <tr style="background-color:#f2f2f2;text-align:left;">
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">Product</th>
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">SKU</th>
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">Supplier</th>
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">Days Remaining</th>
+      <th style="padding:10px;border-bottom:1px solid #dddddd;">Last Restock</th>
+    </tr>
+    {% for item in items %}
+    <tr style="border-bottom:1px solid #eeeeee;">
+      <td style="padding:10px;">{{ item.product_name }}</td>
+      <td style="padding:10px;">{{ item.sku }}</td>
+      <td style="padding:10px;">{{ item.supplier }}</td>
+      <td style="padding:10px;">{{ item.days_of_stock_remaining }}</td>
+      <td style="padding:10px;">{{ item.last_restock_date }}</td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+
+  </table>
+
+  <!-- Footer -->
+  <div style="background-color:#f2f2f2;padding:12px 20px;border-radius:0 0 8px 8px;">
+    <p style="font-family:Arial,sans-serif;font-size:11px;color:#aaaaaa;margin:0;">
+      This is an automated alert from Ocledo. Please do not reply to this email.
+    </p>
+  </div>
+
+</div>
+</body>
+</html>
